@@ -1,5 +1,6 @@
 import unittest
 from functions.get_files_info import get_files_info
+from functions.get_file_content import get_file_content
 
 
 class TestGetFilesInfo(unittest.TestCase):
@@ -27,6 +28,29 @@ class TestGetFilesInfo(unittest.TestCase):
         result = get_files_info("calculator")
         self.assertFalse(result.startswith("Error: "))
         # print(result)
+
+
+class TestGetFileContent(unittest.TestCase):
+    def test_text_with_more_than_max_chars(self):
+        result = get_file_content("calculator", "lorem.txt")
+        self.assertFalse(result.startswith("Error: "))
+        self.assertTrue(result.endswith(" truncated at 10000 characters]"))
+        # print(result[-200:])
+
+    def test_valid_file1(self):
+        result = get_file_content("calculator", "main.py")
+        self.assertFalse(result.startswith("Error: "))
+        print(result)
+
+    def test_valid_file2(self):
+        result = get_file_content("calculator", "pkg/calculator.py")
+        self.assertFalse(result.startswith("Error: "))
+        print(result)
+
+    def test_valid_file3(self):
+        result = get_file_content("calculator", "/bin/cat")
+        self.assertTrue(result.startswith("Error: "))
+        print(result)
 
 
 if __name__ == '__main__':
