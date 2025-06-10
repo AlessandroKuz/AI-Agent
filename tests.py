@@ -1,6 +1,7 @@
 import unittest
 from functions.get_files_info import get_files_info
 from functions.get_file_content import get_file_content
+from functions.write_file import write_file
 
 
 class TestGetFilesInfo(unittest.TestCase):
@@ -49,6 +50,25 @@ class TestGetFileContent(unittest.TestCase):
 
     def test_valid_file3(self):
         result = get_file_content("calculator", "/bin/cat")
+        self.assertTrue(result.startswith("Error: "))
+        print(result)
+
+
+class TestWriteFile(unittest.TestCase):
+    def test_write_file1(self):
+        result = write_file("calculator", "lorem2.txt", "wait, this isn't lorem ipsum")
+        self.assertTrue("Successfully wrote to " in result)
+        self.assertTrue(result.endswith("characters written)"))
+        print(result)
+
+    def test_write_file2(self):
+        result = write_file("calculator", "pkg/morelorem.txt", "lorem ipsum dolor sit amet")
+        self.assertTrue("Successfully wrote to " in result)
+        self.assertTrue(result.endswith("characters written)"))
+        print(result)
+
+    def test_write_file_invalid(self):
+        result = write_file("calculator", "/tmp/temp.txt", "this should not be allowed")
         self.assertTrue(result.startswith("Error: "))
         print(result)
 
