@@ -1,4 +1,6 @@
 from pathlib import Path
+from google.genai import types
+from config import MAX_CHARS
 
 
 def get_file_content(working_directory: Path | str, file_path: Path | str) -> str:
@@ -22,8 +24,6 @@ def get_file_content(working_directory: Path | str, file_path: Path | str) -> st
         return f'Error: Cannot read "{target_path}" as it is outside the permitted working directory: {working_directory}'
 
     try:
-        MAX_CHARS = 10000
-
         with open(target_path, "r") as f:
             content = f.read(MAX_CHARS)
 
@@ -31,3 +31,18 @@ def get_file_content(working_directory: Path | str, file_path: Path | str) -> st
         return content
     except Exception as e:
         return f'Error reading file: {e}'
+
+schema_get_file_content = types.FunctionDeclaration(
+    name="get_file_content",
+    description=f"Reads and returns the first {MAX_CHARS} characters of the content from a specified file within the working directory.",
+    parameters=types.Schema(
+        type=types.Type.OBJECT,
+        properties={
+            "file_path": types.Schema(
+                type=types.Type.STRING,
+                description="The path to the file whose content should be read, relative to the working directory.",
+            ),
+        },
+        required=["file_path"],
+    ),
+)
