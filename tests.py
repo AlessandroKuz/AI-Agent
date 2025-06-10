@@ -2,6 +2,7 @@ import unittest
 from functions.get_files_info import get_files_info
 from functions.get_file_content import get_file_content
 from functions.write_file import write_file
+from functions.run_python_file import run_python_file
 
 
 class TestGetFilesInfo(unittest.TestCase):
@@ -41,17 +42,17 @@ class TestGetFileContent(unittest.TestCase):
     def test_valid_file1(self):
         result = get_file_content("calculator", "main.py")
         self.assertFalse(result.startswith("Error: "))
-        print(result)
+        # print(result)
 
     def test_valid_file2(self):
         result = get_file_content("calculator", "pkg/calculator.py")
         self.assertFalse(result.startswith("Error: "))
-        print(result)
+        # print(result)
 
     def test_valid_file3(self):
         result = get_file_content("calculator", "/bin/cat")
         self.assertTrue(result.startswith("Error: "))
-        print(result)
+        # print(result)
 
 
 class TestWriteFile(unittest.TestCase):
@@ -59,16 +60,38 @@ class TestWriteFile(unittest.TestCase):
         result = write_file("calculator", "lorem2.txt", "wait, this isn't lorem ipsum")
         self.assertTrue("Successfully wrote to " in result)
         self.assertTrue(result.endswith("characters written)"))
-        print(result)
+        # print(result)
 
     def test_write_file2(self):
         result = write_file("calculator", "pkg/morelorem.txt", "lorem ipsum dolor sit amet")
         self.assertTrue("Successfully wrote to " in result)
         self.assertTrue(result.endswith("characters written)"))
-        print(result)
+        # print(result)
 
     def test_write_file_invalid(self):
         result = write_file("calculator", "/tmp/temp.txt", "this should not be allowed")
+        self.assertTrue(result.startswith("Error: "))
+        # print(result)
+
+
+class TestExecuteFile(unittest.TestCase):
+    def test_execute_file1(self):
+        result = run_python_file("calculator", "main.py")
+        self.assertFalse(result.startswith("Error: "))
+        print(result)
+
+    def test_execute_file2(self):
+        result = run_python_file("calculator", "tests.py")
+        self.assertFalse(result.startswith("Error: "))
+        print(result)
+
+    def test_execute_file_invalid1(self):
+        result = run_python_file("calculator", "../main.py")
+        self.assertTrue(result.startswith("Error: "))
+        print(result)
+
+    def test_execute_file_invalid2(self):
+        result = run_python_file("calculator", "nonexistent.py")
         self.assertTrue(result.startswith("Error: "))
         print(result)
 
