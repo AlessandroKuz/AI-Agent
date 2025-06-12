@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 from google import genai
 from google.genai import types
 from prompts import system_prompt
-from call_functions import available_functions
+from call_functions import available_functions, call_function
 
 
 load_dotenv()
@@ -37,13 +37,14 @@ def main(prompt_base):
         print('-' * 50)
     print(response.text)
     print('*' * 50)
-    if len(response.function_calls) > 0:
-        function_call_part = response.function_calls[0]
-        print(function_call_part)
-        print('*' * 50)
-        print(f"Calling function: {function_call_part.name}({function_call_part.args})")
-        print('-' * 50)
+    if not response.function_calls:
+        raise Exception("No function calls found")
+    for function_call_part in response.function_calls:
+        function_call_result = call_function(function_call_part, verbose=verbose)
+        function_call_result.parts[0].function_response.response
+
     if verbose:
+        print(f"-> {function_call_result.parts[0].function_response.response.get('result')}")
         token_count = response.usage_metadata.prompt_token_count
         response_count = response.usage_metadata.candidates_token_count
         print(f"Prompt tokens: {token_count}")

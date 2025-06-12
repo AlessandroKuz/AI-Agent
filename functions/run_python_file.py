@@ -31,7 +31,7 @@ def run_python_file(working_directory: Path | str, file_path: Path | str, args: 
 
     timeout = 30
     try:
-        command = ["python3", target_path]
+        command = ["python3", str(target_path)]
         if args:
             command.extend(args)
         result = subprocess.run(
@@ -46,6 +46,7 @@ def run_python_file(working_directory: Path | str, file_path: Path | str, args: 
 
         stdout = "STDOUT:" + result.stdout
         stderr = "STDERR:" + result.stderr
+        output.extend([stdout, stderr])
 
         # Check for non-zero exit code
         if result.returncode != 0:
@@ -77,7 +78,7 @@ schema_run_python_file = types.FunctionDeclaration(
                     type=types.Type.STRING,
                     description="Optional arguments to pass to the Python file.",
                 ),
-                description="Optional arguments to pass to the Python file.",
+                description="Optional arguments to pass to the Python file. If none are explicitly stated or specified default to None",
             ),
         },
         required=["file_path"],

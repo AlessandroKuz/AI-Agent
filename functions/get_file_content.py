@@ -27,7 +27,8 @@ def get_file_content(working_directory: Path | str, file_path: Path | str) -> st
         with open(target_path, "r") as f:
             content = f.read(MAX_CHARS)
 
-        content = content + f'[...File "{target_path}" truncated at 10000 characters]'
+        if len(content) == MAX_CHARS:
+            content = content + f'[...File "{target_path}" truncated at 10000 characters]'
         return content
     except Exception as e:
         return f'Error reading file: {e}'
