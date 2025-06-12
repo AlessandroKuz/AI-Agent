@@ -24,7 +24,7 @@ def get_file_content(working_directory: Path | str, file_path: Path | str) -> st
         return f'Error: Cannot read "{target_path}" as it is outside the permitted working directory: {working_directory}'
 
     try:
-        with open(target_path, "r") as f:
+        with open(target_path, "r", encoding="utf8") as f:
             content = f.read(MAX_CHARS)
 
         if len(content) == MAX_CHARS:

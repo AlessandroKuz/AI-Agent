@@ -1,2 +1,3 @@
 MAX_CHARS = 10000
+MAX_AUTO_PROMPTING = 20
 WORKING_DIR = './calculator'

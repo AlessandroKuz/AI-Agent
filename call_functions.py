@@ -26,7 +26,7 @@ def call_function(function_call_part: types.FunctionCall, verbose: bool = False)
     if not isinstance(function_call_part, types.FunctionCall):
         return f"Error: expected function_call_part type to be google.genai.types.FunctionCall, but found {type(function_call_part)}"
     if verbose:
-        print(f"Calling function: {function_call_part.name}({function_call_part.args})")
+        print(f" - Calling function: {function_call_part.name}({function_call_part.args})")
     else:
         print(f" - Calling function: {function_call_part.name}")
 
